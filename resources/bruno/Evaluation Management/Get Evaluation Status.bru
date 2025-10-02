@@ -1,0 +1,28 @@
+meta {
+  name: Get Evaluation Status
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/evaluation/{{job_id}}
+  body: none
+  auth: none
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("Response contains job status", function() {
+    const body = res.getBody();
+    expect(body.job_id).to.not.be.undefined;
+    expect(body.start_time).to.not.be.undefined;
+    expect(body.status).to.not.be.undefined;
+    expect(body.progress).to.not.be.undefined;
+    expect(body.progress.total).to.not.be.undefined;
+    expect(body.progress.completed).to.not.be.undefined;
+    expect(body.progress.failed).to.not.be.undefined;
+  });
+}

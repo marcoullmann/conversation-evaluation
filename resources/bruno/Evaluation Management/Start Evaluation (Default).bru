@@ -1,0 +1,36 @@
+meta {
+  name: Start Evaluation (Default)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/evaluation
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "last_x_days": 7,
+    "re_calculate": false,
+    "evaluation_run": false
+  }
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("Response contains job info", function() {
+    const body = res.getBody();
+    expect(body.job_id).to.not.be.undefined;
+    expect(body.start_time).to.not.be.undefined;
+    expect(['started', 'completed']).to.include(body.status);
+    expect(body.progress).to.not.be.undefined;
+    
+    // Store job_id for other requests
+    bru.setVar("job_id", body.job_id);
+  });
+}

@@ -1,0 +1,9 @@
+{
+    "version": "1",
+    "name": "Conversation Evaluator API",
+    "type": "collection",
+    "ignore": [
+        "node_modules",
+        ".git"
+    ]
+}

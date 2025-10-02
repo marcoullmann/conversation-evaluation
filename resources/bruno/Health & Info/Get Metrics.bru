@@ -1,0 +1,23 @@
+meta {
+  name: Get Metrics
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/metrics
+  body: none
+  auth: none
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("Response contains metrics", function() {
+    const body = res.getBody();
+    expect(Array.isArray(body.metrics)).to.be.true;
+    expect(body.total_metrics).to.be.greaterThan(0);
+  });
+}

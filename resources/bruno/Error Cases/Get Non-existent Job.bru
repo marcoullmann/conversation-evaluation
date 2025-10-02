@@ -1,0 +1,22 @@
+meta {
+  name: Get Non-existent Job
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/evaluation/non-existent-job-id
+  body: none
+  auth: none
+}
+
+tests {
+  test("Status is 404", function() {
+    expect(res.getStatus()).to.equal(404);
+  });
+  
+  test("Response contains error message", function() {
+    const body = res.getBody();
+    expect(body.detail).to.not.be.undefined;
+  });
+}

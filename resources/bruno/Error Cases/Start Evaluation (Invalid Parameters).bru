@@ -1,0 +1,30 @@
+meta {
+  name: Start Evaluation (Invalid Parameters)
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/evaluation
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "last_x_days": -5,
+    "re_calculate": false,
+    "evaluation_run": false
+  }
+}
+
+tests {
+  test("Status is 400", function() {
+    expect(res.getStatus()).to.equal(400);
+  });
+  
+  test("Response contains error message", function() {
+    const body = res.getBody();
+    expect(body.detail).to.not.be.undefined;
+  });
+}

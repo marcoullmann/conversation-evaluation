@@ -1,0 +1,22 @@
+meta {
+  name: List All Evaluations
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/evaluations
+  body: none
+  auth: none
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("Response contains evaluations list", function() {
+    const body = res.getBody();
+    expect(Array.isArray(body.evaluations)).to.be.true;
+  });
+}

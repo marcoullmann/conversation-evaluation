@@ -1,0 +1,16 @@
+steps:
+  - name: gcr.io/cloud-builders/gcloud
+    entrypoint: 'bash'
+    args: ['-c', 'gcloud auth print-access-token > /workspace/token.txt']
+  - name: 'docker'
+    entrypoint: 'sh'
+    args: [ '-c', 'docker build --build-arg="TOKEN=$(cat /workspace/token.txt)" -t europe-west6-docker.pkg.dev/axach-inetbuildingzonereg-ibz/$_TARGETPROJECT-repo/$_IMAGEPATH:$TAG_NAME .' ]
+substitutions:
+  _TARGETPROJECT: youmustsetthetarget # default value
+  _IMAGEPATH: youmustsettheimagepath # default value
+images: [
+  'europe-west6-docker.pkg.dev/axach-inetbuildingzonereg-ibz/$_TARGETPROJECT-repo/$_IMAGEPATH:$TAG_NAME',
+]
+options:
+  logging: CLOUD_LOGGING_ONLY
+serviceAccount: 'projects/axach-inetbuildingzone-ibz/serviceAccounts/si-${_TARGETPROJECT}@axach-inetbuildingzone-ibz.iam.gserviceaccount.com'

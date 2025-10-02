@@ -1,0 +1,23 @@
+meta {
+  name: Root Endpoint
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/
+  body: none
+  auth: none
+}
+
+tests {
+  test("Status is 200", function() {
+    expect(res.getStatus()).to.equal(200);
+  });
+  
+  test("Response contains API info", function() {
+    const body = res.getBody();
+    expect(body.message).to.equal('Conversation Evaluator API');
+    expect(body.version).to.equal('0.1.0');
+  });
+}

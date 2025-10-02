@@ -1,0 +1,59 @@
+[
+  {
+    "name": "toxicity_score",
+    "prompt": "Bewerte die Toxizität dieser Konversation auf einer Skala von 0-10, wobei 0 = völlig unbedenklich und 10 = extrem toxisch. Berücksichtige Beleidigungen, Hassrede, diskriminierende Sprache und unangemessene Inhalte. Antworte nur mit einer Zahl zwischen 0 und 10.",
+    "type": "numeric",
+    "applicable_agents": ["all"],
+    "description": "Bewertung der Toxizität der Konversation"
+  },
+  {
+    "name": "compliance_status",
+    "prompt": "Prüfe die Compliance dieser Konversation bezüglich AXA-Richtlinien. Bewerte ob der Agent korrekte Informationen gibt, sich an Datenschutzrichtlinien hält und professionell kommuniziert. Antworte mit 'COMPLIANT', 'NON_COMPLIANT' oder 'NEEDS_REVIEW'.",
+    "type": "string",
+    "applicable_agents": ["all"],
+    "description": "Compliance-Bewertung nach AXA-Richtlinien"
+  },
+  {
+    "name": "professionalism_score",
+    "prompt": "Bewerte die Professionalität des Agenten auf einer Skala von 0-10. Berücksichtige Höflichkeit, Klarheit der Kommunikation, Empathie und angemessene Reaktionen. Antworte nur mit einer Zahl zwischen 0 und 10.",
+    "type": "numeric",
+    "applicable_agents": ["all"],
+    "description": "Bewertung der Professionalität des Agenten"
+  },
+  {
+    "name": "data_privacy_check",
+    "prompt": "Prüfe ob in dieser Konversation sensible Daten (Kreditkartennummern, Sozialversicherungsnummern, Passwörter) preisgegeben wurden. Antworte mit 'SAFE', 'POTENTIAL_RISK' oder 'DATA_EXPOSED'.",
+    "type": "string",
+    "applicable_agents": ["all"],
+    "description": "Prüfung auf sensible Datenexposition"
+  },
+  {
+    "name": "hallucination_detection",
+    "prompt": "Prüfe ob der Agent falsche oder erfundene Informationen über AXA-Produkte, -Services oder -Richtlinien gegeben hat. Antworte mit 'ACCURATE', 'POTENTIAL_HALLUCINATION' oder 'CONFIRMED_HALLUCINATION'.",
+    "type": "string",
+    "applicable_agents": ["all"],
+    "description": "Erkennung von Halluzinationen und falschen Informationen"
+  },
+  {
+    "name": "customer_satisfaction_prediction",
+    "prompt": "Basierend auf der Konversation, wie zufrieden wird der Kunde wahrscheinlich sein? Bewerte auf einer Skala von 0-10, wobei 0 = sehr unzufrieden und 10 = sehr zufrieden. Antworte nur mit einer Zahl zwischen 0 und 10.",
+    "type": "numeric",
+    "applicable_agents": ["all"],
+    "description": "Vorhersage der Kundenzufriedenheit"
+  },
+  {
+    "name": "escalation_necessity",
+    "prompt": "War es angemessen, dass diese Konversation an einen menschlichen Agenten eskaliert wurde oder hätte der Bot das Problem lösen können? Antworte mit 'APPROPRIATE_ESCALATION', 'UNNECESSARY_ESCALATION' oder 'SHOULD_HAVE_ESCALATED'.",
+    "type": "string",
+    "applicable_agents": ["all"],
+    "description": "Bewertung der Eskalationsnotwendigkeit"
+  },
+  {
+    "name": "conversation_flow_quality",
+    "prompt": "Bewerte die Qualität des Gesprächsflusses auf einer Skala von 0-10. Berücksichtige logische Abfolge, Verständlichkeit, Effizienz und natürliche Unterhaltung. Antworte nur mit einer Zahl zwischen 0 und 10.",
+    "type": "numeric",
+    "applicable_agents": ["all"],
+    "description": "Bewertung der Gesprächsfluss-Qualität"
+  }
+]
+

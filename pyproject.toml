@@ -1,0 +1,36 @@
+[project]
+name = "conversation-evaluator"
+version = "0.1.0"
+description = "Automated evaluation system for conversational agents"
+requires-python = "==3.12.*"
+dependencies = [
+    "fastapi",
+    "pydantic",
+    "uvicorn",
+    "gunicorn",
+    "python-dotenv>=1.1.1",
+    "google-cloud-bigquery>=3.11.0",
+    "google-cloud-core>=2.3.0",
+    "python-dateutil>=2.8.0",
+    "pyyaml>=6.0",
+
+    # LangChain integrations
+    "langchain-openai>=0.1.0",
+    "langchain-google-vertexai>=0.1.0",
+]
+
+classifiers = ["Private :: Do Not Upload"]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "httpx>=0.25.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+packages = ["conversation-evaluator"]
+
