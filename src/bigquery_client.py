@@ -23,7 +23,7 @@ class BigQueryClient:
         self.create_evaluation_table_if_not_exists()
         self.create_conversation_view_if_not_exists()
     
-    def get_conversations(self, last_x_days: int = 7, agent_id: Optional[str] = None, re_calculate: bool = False) -> List[Dict[str, Any]]:
+    def get_conversations(self, last_x_days: int, agent_id: Optional[str], re_calculate: bool) -> List[Dict[str, Any]]:
         """Get conversations from BigQuery with optional filtering and re_calculate logic."""
         try:
             agent_filter = f"AND agent_id = '{agent_id}'" if agent_id and agent_id != "all" else ""
@@ -34,11 +34,19 @@ class BigQueryClient:
             else:
                 new_conversations_filter = ""
             
+            # Handle last_x_days filtering using conversation_timestamp
+            if last_x_days == -1:
+                # -1 means all conversations (no time filter)
+                time_filter = ""
+            else:
+                # Filter conversations within the last X days based on conversation_timestamp
+                time_filter = f"AND conversation_timestamp >= TIMESTAMP_SUB(CURRENT_TIMESTAMP(), INTERVAL {last_x_days} DAY)"
+            
             query = f"""
-            SELECT project_id, agent_id, session_id, conversation_turns, CURRENT_TIMESTAMP() as extraction_timestamp
+            SELECT project_id, agent_id, session_id, conversation_timestamp, conversation_turns, CURRENT_TIMESTAMP() as extraction_timestamp
             FROM `{self.project_id}.{self.dataset_id}.{self.conversation_view}`
-            WHERE 1=1 {agent_filter} {new_conversations_filter}
-            ORDER BY session_id
+            WHERE 1=1 {agent_filter} {new_conversations_filter} {time_filter}
+            ORDER BY conversation_timestamp DESC, session_id
             """
             
             results = self.client.query(query).result()
@@ -46,11 +54,12 @@ class BigQueryClient:
                 "project_id": row.project_id,
                 "agent_id": row.agent_id,
                 "session_id": row.session_id,
+                "conversation_timestamp": row.conversation_timestamp.isoformat() if row.conversation_timestamp else None,
                 "conversation_turns": row.conversation_turns,
                 "extraction_timestamp": row.extraction_timestamp.isoformat()
             } for row in results]
             
-            logger.info(f"Retrieved {len(conversations)} conversations for evaluation")
+            logger.info(f"Retrieved {len(conversations)} conversations for evaluation (last {last_x_days} days)")
             return conversations
             
         except Exception as e:

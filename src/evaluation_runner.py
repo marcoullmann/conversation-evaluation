@@ -38,7 +38,7 @@ class EvaluationRunner:
             logger.info(f"Starting evaluation job {job_id}")
             job_store.update_job_status(job_id, "running")
             
-            conversations = self.bigquery_client.get_conversations(last_x_days=last_x_days, re_calculate=re_calculate)
+            conversations = self.bigquery_client.get_conversations(last_x_days=last_x_days, agent_id=None, re_calculate=re_calculate)
             if not conversations:
                 job_store.update_job_status(job_id, "completed")
                 return
@@ -153,7 +153,7 @@ class EvaluationRunner:
     def start_evaluation_job(self, last_x_days: int, re_calculate: bool, evaluation_run: bool) -> str:
         """Start evaluation job and return job ID for tracking."""
         try:
-            conversations = self.bigquery_client.get_conversations(last_x_days=last_x_days, re_calculate=re_calculate)
+            conversations = self.bigquery_client.get_conversations(last_x_days=last_x_days, agent_id=None, re_calculate=re_calculate)
             if not conversations:
                 # Create a completed job with 0 evaluations
                 job_data = job_store.create_job(

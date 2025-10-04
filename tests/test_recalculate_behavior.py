@@ -107,9 +107,10 @@ class TestRecalculateBehavior:
             assert job_id is not None
             assert isinstance(job_id, str)
             
-            # Verify that get_conversations was called with re_calculate=False
+            # Verify that get_conversations was called with re_calculate=False  
             self.mock_bigquery_client.get_conversations.assert_called_with(
                 last_x_days=7,
+                agent_id=None,
                 re_calculate=False
             )
 
@@ -135,9 +136,10 @@ class TestRecalculateBehavior:
                 evaluation_run=False
             )
             
-            # Verify that get_conversations was called with re_calculate=True
+            # Verify that get_conversations was called with re_calculate=True   
             self.mock_bigquery_client.get_conversations.assert_called_with(
                 last_x_days=7,
+                agent_id=None,
                 re_calculate=True
             )
             
@@ -171,6 +173,7 @@ class TestRecalculateBehavior:
             # Call get_conversations with re_calculate=False
             conversations = client.get_conversations(
                 last_x_days=7,
+                agent_id=None,
                 re_calculate=False
             )
             
@@ -211,6 +214,7 @@ class TestRecalculateBehavior:
             # Call get_conversations with re_calculate=True
             conversations = client.get_conversations(
                 last_x_days=7,
+                agent_id=None,
                 re_calculate=True
             )
             
@@ -301,9 +305,10 @@ class TestRecalculateIntegration:
             assert job_id is not None
             assert isinstance(job_id, str)
             
-            # Verify that get_conversations was called with re_calculate=False
+            # Verify that get_conversations was called with re_calculate=False  
             mock_bq_instance.get_conversations.assert_called_with(
                 last_x_days=7,
+                agent_id=None,
                 re_calculate=False
             )
 
@@ -347,9 +352,10 @@ class TestRecalculateIntegration:
                 evaluation_run=False
             )
             
-            # Verify that get_conversations was called with re_calculate=True
+            # Verify that get_conversations was called with re_calculate=True   
             mock_bq_instance.get_conversations.assert_called_with(
                 last_x_days=7,
+                agent_id=None,
                 re_calculate=True
             )
             
