@@ -152,18 +152,19 @@ class BigQueryClient:
             CREATE OR REPLACE VIEW `{view_id}` AS
             WITH conversation_turns AS (
               SELECT 
-                `conversation:name` as full_session_id,
+                `conversation_name` as full_session_id,
                 turn_position,
                 1 as message_order,
                 'User' as role,
-                JSON_VALUE(request, '$.queryInput.text.text') as message
+                JSON_VALUE(request, '$.queryInput.text.text') as message,
+                request_time
               FROM `{self.project_id}.{self.dataset_id}.ct_interaction_log`
               WHERE JSON_VALUE(request, '$.queryInput.text.text') IS NOT NULL
               
               UNION ALL
               
               SELECT 
-                `conversation:name` as full_session_id,
+                `conversation_name` as full_session_id,
                 turn_position,
                 2 as message_order,
                 'Bot' as role,
@@ -171,7 +172,8 @@ class BigQueryClient:
                 COALESCE(
                   JSON_VALUE(response, '$.queryResult.responseMessages[1].text.text[0]'),
                   JSON_VALUE(response, '$.queryResult.responseMessages[0].text.text[0]')
-                ) as message
+                ) as message,
+                request_time
               FROM `{self.project_id}.{self.dataset_id}.ct_interaction_log`
               WHERE COALESCE(
                 JSON_VALUE(response, '$.queryResult.responseMessages[1].text.text[0]'),
@@ -190,6 +192,8 @@ class BigQueryClient:
                 ELSE
                   REGEXP_EXTRACT(full_session_id, r'/sessions/([^/]+)')
               END as session_id,
+              -- Get the earliest request_time for the conversation
+              MIN(request_time) as conversation_timestamp,
               TO_JSON_STRING(
                 ARRAY_AGG(
                   STRUCT(role, message)
